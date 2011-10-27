@@ -1,3 +1,7 @@
 com.palantir.ptoss.cinch.core
+com.palantir.ptoss.cinch.example
+com.palantir.ptoss.cinch.example.demo
+com.palantir.ptoss.cinch.example.simple
+com.palantir.ptoss.cinch.example.superdemo
 com.palantir.ptoss.cinch.swing
 com.palantir.ptoss.util
