@@ -40,135 +40,127 @@
 <FONT color="green">037</FONT>    <a name="line.37"></a>
 <FONT color="green">038</FONT>    /**<a name="line.38"></a>
 <FONT color="green">039</FONT>     * Simple example illustrating use of {@link OnChange}.  Fires a method call on an Change event. <a name="line.39"></a>
-<FONT color="green">040</FONT>     * Note that for a compone<a name="line.40"></a>
-<FONT color="green">041</FONT>    import com.palantir.ptoss.cinch.swing.OnChange;<a name="line.41"></a>
-<FONT color="green">042</FONT>    <a name="line.42"></a>
-<FONT color="green">043</FONT>    import com.palantir.ptoss.cinch.swing.OnChange;<a name="line.43"></a>
-<FONT color="green">044</FONT>    <a name="line.44"></a>
-<FONT color="green">045</FONT>    import com.palantir.ptoss.cinch.swing.OnChange;<a name="line.45"></a>
+<FONT color="green">040</FONT>     * Note that for a component like {@link JToggleButton}, this includes every mouse event, such that<a name="line.40"></a>
+<FONT color="green">041</FONT>     * a toggle will generate six {@link ChangeEvent}s.<a name="line.41"></a>
+<FONT color="green">042</FONT>     * <a name="line.42"></a>
+<FONT color="green">043</FONT>     * @see &lt;a href='http://docs.oracle.com/javase/6/docs/api/javax/swing/event/ChangeListener.html'&gt;ChangeListener&lt;/a&gt; - contains a list of components that support ChangeListeners.<a name="line.43"></a>
+<FONT color="green">044</FONT>     */<a name="line.44"></a>
+<FONT color="green">045</FONT>    public class OnChangeExample {<a name="line.45"></a>
 <FONT color="green">046</FONT>    <a name="line.46"></a>
-<FONT color="green">047</FONT>    import com.palantir.ptoss.cinch.swing.OnChange;<a name="line.47"></a>
-<FONT color="green">048</FONT>    nt like {@link JToggleButton}, this includes every mouse event, such that<a name="line.48"></a>
-<FONT color="green">049</FONT>     * a toggle will generate six {@link ChangeEvent}s.<a name="line.49"></a>
-<FONT color="green">050</FONT>     * <a name="line.50"></a>
-<FONT color="green">051</FONT>     * @see &lt;a href='http://docs.oracle.com/javase/6/docs/api/javax/swing/event/ChangeListener.html'&gt;ChangeListener&lt;/a&gt; - contains a list of components that support ChangeListeners.<a name="line.51"></a>
-<FONT color="green">052</FONT>     */<a name="line.52"></a>
-<FONT color="green">053</FONT>    public class OnChangeExample {<a name="line.53"></a>
-<FONT color="green">054</FONT>    <a name="line.54"></a>
-<FONT color="green">055</FONT>            static final Logger log = LogManager.getLogger(OnChangeExample.class);<a name="line.55"></a>
-<FONT color="green">056</FONT>            <a name="line.56"></a>
-<FONT color="green">057</FONT>            public final Model model = new Model();<a name="line.57"></a>
-<FONT color="green">058</FONT>            public final JLabel label = new JLabel("Toggle: ");<a name="line.58"></a>
-<FONT color="green">059</FONT>            @Bound(to = "toggle")<a name="line.59"></a>
-<FONT color="green">060</FONT>            @OnChange(call = "incrementStateChangeCount")<a name="line.60"></a>
-<FONT color="green">061</FONT>            public final JToggleButton button = new JToggleButton("Click Me!");<a name="line.61"></a>
-<FONT color="green">062</FONT>            public final JLabel countLabel = new JLabel("Button State Changes: ");<a name="line.62"></a>
-<FONT color="green">063</FONT>            @Bound(to = "stateChangeCount")<a name="line.63"></a>
-<FONT color="green">064</FONT>            public final JLabel count = new JLabel("0");<a name="line.64"></a>
-<FONT color="green">065</FONT>            <a name="line.65"></a>
-<FONT color="green">066</FONT>            final Bindings bindings = new Bindings();<a name="line.66"></a>
-<FONT color="green">067</FONT>            <a name="line.67"></a>
-<FONT color="green">068</FONT>            public OnChangeExample() {<a name="line.68"></a>
-<FONT color="green">069</FONT>                    this.bindings.bind(this);<a name="line.69"></a>
-<FONT color="green">070</FONT>                    this.buildGUI();<a name="line.70"></a>
-<FONT color="green">071</FONT>            }<a name="line.71"></a>
-<FONT color="green">072</FONT>            <a name="line.72"></a>
-<FONT color="green">073</FONT>            public static class Model extends DefaultBindableModel {<a name="line.73"></a>
-<FONT color="green">074</FONT>                    <a name="line.74"></a>
-<FONT color="green">075</FONT>                    boolean toggle;<a name="line.75"></a>
-<FONT color="green">076</FONT>                    Integer stateChangeCount = new Integer(0);<a name="line.76"></a>
+<FONT color="green">047</FONT>            static final Logger log = LogManager.getLogger(OnChangeExample.class);<a name="line.47"></a>
+<FONT color="green">048</FONT>            <a name="line.48"></a>
+<FONT color="green">049</FONT>            public final Model model = new Model();<a name="line.49"></a>
+<FONT color="green">050</FONT>            public final JLabel label = new JLabel("Toggle: ");<a name="line.50"></a>
+<FONT color="green">051</FONT>            @Bound(to = "toggle")<a name="line.51"></a>
+<FONT color="green">052</FONT>            @OnChange(call = "incrementStateChangeCount")<a name="line.52"></a>
+<FONT color="green">053</FONT>            public final JToggleButton button = new JToggleButton("Click Me!");<a name="line.53"></a>
+<FONT color="green">054</FONT>            public final JLabel countLabel = new JLabel("Button State Changes: ");<a name="line.54"></a>
+<FONT color="green">055</FONT>            @Bound(to = "stateChangeCount")<a name="line.55"></a>
+<FONT color="green">056</FONT>            public final JLabel count = new JLabel("0");<a name="line.56"></a>
+<FONT color="green">057</FONT>            <a name="line.57"></a>
+<FONT color="green">058</FONT>            final Bindings bindings = new Bindings();<a name="line.58"></a>
+<FONT color="green">059</FONT>            <a name="line.59"></a>
+<FONT color="green">060</FONT>            public OnChangeExample() {<a name="line.60"></a>
+<FONT color="green">061</FONT>                    this.bindings.bind(this);<a name="line.61"></a>
+<FONT color="green">062</FONT>                    this.buildGUI();<a name="line.62"></a>
+<FONT color="green">063</FONT>            }<a name="line.63"></a>
+<FONT color="green">064</FONT>            <a name="line.64"></a>
+<FONT color="green">065</FONT>            public static class Model extends DefaultBindableModel {<a name="line.65"></a>
+<FONT color="green">066</FONT>                    <a name="line.66"></a>
+<FONT color="green">067</FONT>                    boolean toggle;<a name="line.67"></a>
+<FONT color="green">068</FONT>                    Integer stateChangeCount = new Integer(0);<a name="line.68"></a>
+<FONT color="green">069</FONT>    <a name="line.69"></a>
+<FONT color="green">070</FONT>                    public boolean isToggle() {<a name="line.70"></a>
+<FONT color="green">071</FONT>                            return toggle;<a name="line.71"></a>
+<FONT color="green">072</FONT>                    }<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>                    public void setToggle(boolean toggle) {<a name="line.74"></a>
+<FONT color="green">075</FONT>                            this.toggle = toggle;<a name="line.75"></a>
+<FONT color="green">076</FONT>                    }<a name="line.76"></a>
 <FONT color="green">077</FONT>    <a name="line.77"></a>
-<FONT color="green">078</FONT>                    public boolean isToggle() {<a name="line.78"></a>
-<FONT color="green">079</FONT>                            return toggle;<a name="line.79"></a>
+<FONT color="green">078</FONT>                    public Integer getStateChangeCount() {<a name="line.78"></a>
+<FONT color="green">079</FONT>                            return stateChangeCount;<a name="line.79"></a>
 <FONT color="green">080</FONT>                    }<a name="line.80"></a>
-<FONT color="green">081</FONT>    <a name="line.81"></a>
-<FONT color="green">082</FONT>                    public void setToggle(boolean toggle) {<a name="line.82"></a>
-<FONT color="green">083</FONT>                            this.toggle = toggle;<a name="line.83"></a>
-<FONT color="green">084</FONT>                    }<a name="line.84"></a>
-<FONT color="green">085</FONT>    <a name="line.85"></a>
-<FONT color="green">086</FONT>                    public Integer getStateChangeCount() {<a name="line.86"></a>
-<FONT color="green">087</FONT>                            return stateChangeCount;<a name="line.87"></a>
-<FONT color="green">088</FONT>                    }<a name="line.88"></a>
-<FONT color="green">089</FONT>                    <a name="line.89"></a>
-<FONT color="green">090</FONT>                    public synchronized void setStateChangeCount(Integer inverseVal) {<a name="line.90"></a>
-<FONT color="green">091</FONT>                            this.stateChangeCount = inverseVal;<a name="line.91"></a>
-<FONT color="green">092</FONT>                            update();<a name="line.92"></a>
-<FONT color="green">093</FONT>                    }<a name="line.93"></a>
-<FONT color="green">094</FONT>                    <a name="line.94"></a>
-<FONT color="green">095</FONT>                    public synchronized void incrementStateChangeCount() {<a name="line.95"></a>
-<FONT color="green">096</FONT>                            int incrementedCount = stateChangeCount + 1;<a name="line.96"></a>
-<FONT color="green">097</FONT>                            log.info("New toggle count: " + incrementedCount);<a name="line.97"></a>
-<FONT color="green">098</FONT>                            setStateChangeCount(incrementedCount);<a name="line.98"></a>
-<FONT color="green">099</FONT>                    }<a name="line.99"></a>
-<FONT color="green">100</FONT>            }<a name="line.100"></a>
+<FONT color="green">081</FONT>                    <a name="line.81"></a>
+<FONT color="green">082</FONT>                    public synchronized void setStateChangeCount(Integer inverseVal) {<a name="line.82"></a>
+<FONT color="green">083</FONT>                            this.stateChangeCount = inverseVal;<a name="line.83"></a>
+<FONT color="green">084</FONT>                            update();<a name="line.84"></a>
+<FONT color="green">085</FONT>                    }<a name="line.85"></a>
+<FONT color="green">086</FONT>                    <a name="line.86"></a>
+<FONT color="green">087</FONT>                    public synchronized void incrementStateChangeCount() {<a name="line.87"></a>
+<FONT color="green">088</FONT>                            int incrementedCount = stateChangeCount + 1;<a name="line.88"></a>
+<FONT color="green">089</FONT>                            log.info("New toggle count: " + incrementedCount);<a name="line.89"></a>
+<FONT color="green">090</FONT>                            setStateChangeCount(incrementedCount);<a name="line.90"></a>
+<FONT color="green">091</FONT>                    }<a name="line.91"></a>
+<FONT color="green">092</FONT>            }<a name="line.92"></a>
+<FONT color="green">093</FONT>                    <a name="line.93"></a>
+<FONT color="green">094</FONT>    <a name="line.94"></a>
+<FONT color="green">095</FONT>            <a name="line.95"></a>
+<FONT color="green">096</FONT>            void buildGUI() {<a name="line.96"></a>
+<FONT color="green">097</FONT>                    JFrame frame = new JFrame(OnChangeExample.class.getSimpleName());<a name="line.97"></a>
+<FONT color="green">098</FONT>                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);<a name="line.98"></a>
+<FONT color="green">099</FONT>                    frame.setSize(400, 100);<a name="line.99"></a>
+<FONT color="green">100</FONT>                    frame.setLayout(new GridBagLayout());<a name="line.100"></a>
 <FONT color="green">101</FONT>                    <a name="line.101"></a>
 <FONT color="green">102</FONT>    <a name="line.102"></a>
-<FONT color="green">103</FONT>            <a name="line.103"></a>
-<FONT color="green">104</FONT>            void buildGUI() {<a name="line.104"></a>
-<FONT color="green">105</FONT>                    JFrame frame = new JFrame(OnChangeExample.class.getSimpleName());<a name="line.105"></a>
-<FONT color="green">106</FONT>                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);<a name="line.106"></a>
-<FONT color="green">107</FONT>                    frame.setSize(400, 100);<a name="line.107"></a>
-<FONT color="green">108</FONT>                    frame.setLayout(new GridBagLayout());<a name="line.108"></a>
-<FONT color="green">109</FONT>                    <a name="line.109"></a>
-<FONT color="green">110</FONT>    <a name="line.110"></a>
-<FONT color="green">111</FONT>                    <a name="line.111"></a>
-<FONT color="green">112</FONT>    <a name="line.112"></a>
-<FONT color="green">113</FONT>                    frame.add(label,getLeftGBC(0));<a name="line.113"></a>
-<FONT color="green">114</FONT>                    frame.add(button,getRightGBC(0));<a name="line.114"></a>
-<FONT color="green">115</FONT>                    count.setHorizontalAlignment(SwingConstants.CENTER);<a name="line.115"></a>
-<FONT color="green">116</FONT>                    frame.add(countLabel,getLeftGBC(1));<a name="line.116"></a>
-<FONT color="green">117</FONT>                    frame.add(count,getRightGBC(1));<a name="line.117"></a>
-<FONT color="green">118</FONT>                    frame.setVisible(true);<a name="line.118"></a>
-<FONT color="green">119</FONT>            }<a name="line.119"></a>
-<FONT color="green">120</FONT>            <a name="line.120"></a>
-<FONT color="green">121</FONT>            public static void main(String[] args) {<a name="line.121"></a>
-<FONT color="green">122</FONT>                    Examples.initializeLogging();<a name="line.122"></a>
-<FONT color="green">123</FONT>                    // set to Metal LaF<a name="line.123"></a>
-<FONT color="green">124</FONT>                    try {<a name="line.124"></a>
-<FONT color="green">125</FONT>                            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());<a name="line.125"></a>
-<FONT color="green">126</FONT>                            EventQueue.invokeAndWait(new Runnable() {<a name="line.126"></a>
-<FONT color="green">127</FONT>                                    public void run() {<a name="line.127"></a>
-<FONT color="green">128</FONT>                                            new OnChangeExample();<a name="line.128"></a>
-<FONT color="green">129</FONT>                                    }<a name="line.129"></a>
-<FONT color="green">130</FONT>                            });<a name="line.130"></a>
-<FONT color="green">131</FONT>                    } catch (Exception e) {<a name="line.131"></a>
-<FONT color="green">132</FONT>                            e.printStackTrace();<a name="line.132"></a>
-<FONT color="green">133</FONT>                    }<a name="line.133"></a>
-<FONT color="green">134</FONT>            }<a name="line.134"></a>
-<FONT color="green">135</FONT>            <a name="line.135"></a>
-<FONT color="green">136</FONT>            GridBagConstraints getDefaultGBC() {<a name="line.136"></a>
-<FONT color="green">137</FONT>                    GridBagConstraints gbc = new GridBagConstraints();<a name="line.137"></a>
-<FONT color="green">138</FONT>                    gbc.gridheight = 1;<a name="line.138"></a>
-<FONT color="green">139</FONT>                    gbc.gridwidth = 1;<a name="line.139"></a>
-<FONT color="green">140</FONT>                    gbc.gridy = 0;<a name="line.140"></a>
-<FONT color="green">141</FONT>                    gbc.gridx = 0;<a name="line.141"></a>
-<FONT color="green">142</FONT>                    gbc.fill = GridBagConstraints.HORIZONTAL;<a name="line.142"></a>
-<FONT color="green">143</FONT>                    gbc.weightx = 1;<a name="line.143"></a>
-<FONT color="green">144</FONT>                    gbc.weighty = 1;<a name="line.144"></a>
-<FONT color="green">145</FONT>                    gbc.ipadx = 5;<a name="line.145"></a>
-<FONT color="green">146</FONT>                    gbc.ipady = 5;<a name="line.146"></a>
-<FONT color="green">147</FONT>                    gbc.insets = new Insets(10, 0, 10, 0);<a name="line.147"></a>
-<FONT color="green">148</FONT>                    return gbc;<a name="line.148"></a>
-<FONT color="green">149</FONT>            }<a name="line.149"></a>
-<FONT color="green">150</FONT>            <a name="line.150"></a>
-<FONT color="green">151</FONT>            GridBagConstraints getLeftGBC(int gridy) {<a name="line.151"></a>
-<FONT color="green">152</FONT>                    GridBagConstraints gbc = getDefaultGBC();<a name="line.152"></a>
-<FONT color="green">153</FONT>                    gbc.gridx = 0;<a name="line.153"></a>
-<FONT color="green">154</FONT>                    gbc.gridy = gridy;<a name="line.154"></a>
-<FONT color="green">155</FONT>                    gbc.anchor = GridBagConstraints.EAST;<a name="line.155"></a>
-<FONT color="green">156</FONT>                    gbc.weightx = 0;<a name="line.156"></a>
-<FONT color="green">157</FONT>                    return gbc;<a name="line.157"></a>
-<FONT color="green">158</FONT>            }<a name="line.158"></a>
-<FONT color="green">159</FONT>            <a name="line.159"></a>
-<FONT color="green">160</FONT>            GridBagConstraints getRightGBC(int gridy) {<a name="line.160"></a>
-<FONT color="green">161</FONT>                    GridBagConstraints gbc = getDefaultGBC();<a name="line.161"></a>
-<FONT color="green">162</FONT>                    gbc.gridx = 1;<a name="line.162"></a>
-<FONT color="green">163</FONT>                    gbc.gridy = gridy;<a name="line.163"></a>
-<FONT color="green">164</FONT>                    gbc.anchor = GridBagConstraints.WEST;<a name="line.164"></a>
-<FONT color="green">165</FONT>                    gbc.weightx = 1;<a name="line.165"></a>
-<FONT color="green">166</FONT>                    return gbc;<a name="line.166"></a>
-<FONT color="green">167</FONT>            }<a name="line.167"></a>
-<FONT color="green">168</FONT>    }<a name="line.168"></a>
+<FONT color="green">103</FONT>                    <a name="line.103"></a>
+<FONT color="green">104</FONT>    <a name="line.104"></a>
+<FONT color="green">105</FONT>                    frame.add(label,getLeftGBC(0));<a name="line.105"></a>
+<FONT color="green">106</FONT>                    frame.add(button,getRightGBC(0));<a name="line.106"></a>
+<FONT color="green">107</FONT>                    count.setHorizontalAlignment(SwingConstants.CENTER);<a name="line.107"></a>
+<FONT color="green">108</FONT>                    frame.add(countLabel,getLeftGBC(1));<a name="line.108"></a>
+<FONT color="green">109</FONT>                    frame.add(count,getRightGBC(1));<a name="line.109"></a>
+<FONT color="green">110</FONT>                    frame.setVisible(true);<a name="line.110"></a>
+<FONT color="green">111</FONT>            }<a name="line.111"></a>
+<FONT color="green">112</FONT>            <a name="line.112"></a>
+<FONT color="green">113</FONT>            public static void main(String[] args) {<a name="line.113"></a>
+<FONT color="green">114</FONT>                    Examples.initializeLogging();<a name="line.114"></a>
+<FONT color="green">115</FONT>                    // set to Metal LaF<a name="line.115"></a>
+<FONT color="green">116</FONT>                    try {<a name="line.116"></a>
+<FONT color="green">117</FONT>                            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());<a name="line.117"></a>
+<FONT color="green">118</FONT>                            EventQueue.invokeAndWait(new Runnable() {<a name="line.118"></a>
+<FONT color="green">119</FONT>                                    public void run() {<a name="line.119"></a>
+<FONT color="green">120</FONT>                                            new OnChangeExample();<a name="line.120"></a>
+<FONT color="green">121</FONT>                                    }<a name="line.121"></a>
+<FONT color="green">122</FONT>                            });<a name="line.122"></a>
+<FONT color="green">123</FONT>                    } catch (Exception e) {<a name="line.123"></a>
+<FONT color="green">124</FONT>                            e.printStackTrace();<a name="line.124"></a>
+<FONT color="green">125</FONT>                    }<a name="line.125"></a>
+<FONT color="green">126</FONT>            }<a name="line.126"></a>
+<FONT color="green">127</FONT>            <a name="line.127"></a>
+<FONT color="green">128</FONT>            GridBagConstraints getDefaultGBC() {<a name="line.128"></a>
+<FONT color="green">129</FONT>                    GridBagConstraints gbc = new GridBagConstraints();<a name="line.129"></a>
+<FONT color="green">130</FONT>                    gbc.gridheight = 1;<a name="line.130"></a>
+<FONT color="green">131</FONT>                    gbc.gridwidth = 1;<a name="line.131"></a>
+<FONT color="green">132</FONT>                    gbc.gridy = 0;<a name="line.132"></a>
+<FONT color="green">133</FONT>                    gbc.gridx = 0;<a name="line.133"></a>
+<FONT color="green">134</FONT>                    gbc.fill = GridBagConstraints.HORIZONTAL;<a name="line.134"></a>
+<FONT color="green">135</FONT>                    gbc.weightx = 1;<a name="line.135"></a>
+<FONT color="green">136</FONT>                    gbc.weighty = 1;<a name="line.136"></a>
+<FONT color="green">137</FONT>                    gbc.ipadx = 5;<a name="line.137"></a>
+<FONT color="green">138</FONT>                    gbc.ipady = 5;<a name="line.138"></a>
+<FONT color="green">139</FONT>                    gbc.insets = new Insets(10, 0, 10, 0);<a name="line.139"></a>
+<FONT color="green">140</FONT>                    return gbc;<a name="line.140"></a>
+<FONT color="green">141</FONT>            }<a name="line.141"></a>
+<FONT color="green">142</FONT>            <a name="line.142"></a>
+<FONT color="green">143</FONT>            GridBagConstraints getLeftGBC(int gridy) {<a name="line.143"></a>
+<FONT color="green">144</FONT>                    GridBagConstraints gbc = getDefaultGBC();<a name="line.144"></a>
+<FONT color="green">145</FONT>                    gbc.gridx = 0;<a name="line.145"></a>
+<FONT color="green">146</FONT>                    gbc.gridy = gridy;<a name="line.146"></a>
+<FONT color="green">147</FONT>                    gbc.anchor = GridBagConstraints.EAST;<a name="line.147"></a>
+<FONT color="green">148</FONT>                    gbc.weightx = 0;<a name="line.148"></a>
+<FONT color="green">149</FONT>                    return gbc;<a name="line.149"></a>
+<FONT color="green">150</FONT>            }<a name="line.150"></a>
+<FONT color="green">151</FONT>            <a name="line.151"></a>
+<FONT color="green">152</FONT>            GridBagConstraints getRightGBC(int gridy) {<a name="line.152"></a>
+<FONT color="green">153</FONT>                    GridBagConstraints gbc = getDefaultGBC();<a name="line.153"></a>
+<FONT color="green">154</FONT>                    gbc.gridx = 1;<a name="line.154"></a>
+<FONT color="green">155</FONT>                    gbc.gridy = gridy;<a name="line.155"></a>
+<FONT color="green">156</FONT>                    gbc.anchor = GridBagConstraints.WEST;<a name="line.156"></a>
+<FONT color="green">157</FONT>                    gbc.weightx = 1;<a name="line.157"></a>
+<FONT color="green">158</FONT>                    return gbc;<a name="line.158"></a>
+<FONT color="green">159</FONT>            }<a name="line.159"></a>
+<FONT color="green">160</FONT>    }<a name="line.160"></a>
 
 
 

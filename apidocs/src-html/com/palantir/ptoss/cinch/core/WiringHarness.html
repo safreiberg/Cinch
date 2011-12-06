@@ -20,10 +20,26 @@
 <FONT color="green">017</FONT>    import java.lang.annotation.Annotation;<a name="line.17"></a>
 <FONT color="green">018</FONT>    import java.util.Collection;<a name="line.18"></a>
 <FONT color="green">019</FONT>    <a name="line.19"></a>
-<FONT color="green">020</FONT>    public interface WiringHarness&lt;T extends Annotation, W&gt; {<a name="line.20"></a>
-<FONT color="green">021</FONT>            Collection&lt;? extends Binding&gt; wire(T bound, BindingContext context, W toWire) <a name="line.21"></a>
-<FONT color="green">022</FONT>                    throws IllegalAccessException, IntrospectionException;<a name="line.22"></a>
-<FONT color="green">023</FONT>    }<a name="line.23"></a>
+<FONT color="green">020</FONT>    /**<a name="line.20"></a>
+<FONT color="green">021</FONT>     * Interface for classes that actually perform a specific wiring.<a name="line.21"></a>
+<FONT color="green">022</FONT>     * @author regs<a name="line.22"></a>
+<FONT color="green">023</FONT>     *<a name="line.23"></a>
+<FONT color="green">024</FONT>     * @param &lt;T&gt; the type of {@link Annotation} that this harness consumes.<a name="line.24"></a>
+<FONT color="green">025</FONT>     * @param &lt;W&gt; the type of component that this harness knows how to wire.<a name="line.25"></a>
+<FONT color="green">026</FONT>     */<a name="line.26"></a>
+<FONT color="green">027</FONT>    public interface WiringHarness&lt;T extends Annotation, W&gt; {<a name="line.27"></a>
+<FONT color="green">028</FONT>            /**<a name="line.28"></a>
+<FONT color="green">029</FONT>             * Performs the wiring of a specific component based on the passed binding annotation.<a name="line.29"></a>
+<FONT color="green">030</FONT>             * @param bound annotation containing the data needed to wire this component to the context.<a name="line.30"></a>
+<FONT color="green">031</FONT>             * @param context metadata about the context for wiring.<a name="line.31"></a>
+<FONT color="green">032</FONT>             * @param toWire the component to be wired by this harness.<a name="line.32"></a>
+<FONT color="green">033</FONT>             * @return one or more {@link Binding} objects represent the wirings performed by this harness.<a name="line.33"></a>
+<FONT color="green">034</FONT>             * @throws IllegalAccessException<a name="line.34"></a>
+<FONT color="green">035</FONT>             * @throws IntrospectionException<a name="line.35"></a>
+<FONT color="green">036</FONT>             */<a name="line.36"></a>
+<FONT color="green">037</FONT>            Collection&lt;? extends Binding&gt; wire(T bound, BindingContext context, W toWire) <a name="line.37"></a>
+<FONT color="green">038</FONT>                    throws IllegalAccessException, IntrospectionException;<a name="line.38"></a>
+<FONT color="green">039</FONT>    }<a name="line.39"></a>
 
 
 
