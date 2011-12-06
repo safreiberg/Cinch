@@ -57,172 +57,171 @@
 <FONT color="green">054</FONT>    public @interface BoundSelection {<a name="line.54"></a>
 <FONT color="green">055</FONT>            /**<a name="line.55"></a>
 <FONT color="green">056</FONT>             * The model property to bind to.<a name="line.56"></a>
-<FONT color="green">057</FONT>             * @return<a name="line.57"></a>
-<FONT color="green">058</FONT>             */<a name="line.58"></a>
-<FONT color="green">059</FONT>            String to();<a name="line.59"></a>
-<FONT color="green">060</FONT>            <a name="line.60"></a>
-<FONT color="green">061</FONT>            /**<a name="line.61"></a>
-<FONT color="green">062</FONT>             * When this binding should occur.<a name="line.62"></a>
-<FONT color="green">063</FONT>             */<a name="line.63"></a>
-<FONT color="green">064</FONT>            String[] on() default "";<a name="line.64"></a>
-<FONT color="green">065</FONT>            <a name="line.65"></a>
-<FONT color="green">066</FONT>            /**<a name="line.66"></a>
-<FONT color="green">067</FONT>             * How to render the null value in a JComboBox.<a name="line.67"></a>
-<FONT color="green">068</FONT>             */<a name="line.68"></a>
-<FONT color="green">069</FONT>            String nullValue() default ""; <a name="line.69"></a>
-<FONT color="green">070</FONT>            <a name="line.70"></a>
-<FONT color="green">071</FONT>            /**<a name="line.71"></a>
-<FONT color="green">072</FONT>             * Whether or not a JList should bind with multiselect.<a name="line.72"></a>
-<FONT color="green">073</FONT>             */<a name="line.73"></a>
-<FONT color="green">074</FONT>            boolean multi() default false;<a name="line.74"></a>
-<FONT color="green">075</FONT>            <a name="line.75"></a>
-<FONT color="green">076</FONT>            /**<a name="line.76"></a>
-<FONT color="green">077</FONT>             * Inner utility class that performs the runtime wiring of all {@link BoundSelection} bindings.<a name="line.77"></a>
-<FONT color="green">078</FONT>             */<a name="line.78"></a>
-<FONT color="green">079</FONT>            public static class Wiring implements BindingWiring {<a name="line.79"></a>
-<FONT color="green">080</FONT>                    private static final Logger logger = Logger.getLogger(BoundSelection.class);<a name="line.80"></a>
-<FONT color="green">081</FONT>                    <a name="line.81"></a>
-<FONT color="green">082</FONT>                    public Collection&lt;Binding&gt; wire(BindingContext context) {<a name="line.82"></a>
-<FONT color="green">083</FONT>                            List&lt;Field&gt; boundFields = context.getAnnotatedFields(BoundSelection.class);<a name="line.83"></a>
-<FONT color="green">084</FONT>                            List&lt;Binding&gt; bindings = Lists.newArrayList();<a name="line.84"></a>
-<FONT color="green">085</FONT>                        for (Field field : boundFields) {<a name="line.85"></a>
-<FONT color="green">086</FONT>                            BoundSelection bound = field.getAnnotation(BoundSelection.class);<a name="line.86"></a>
-<FONT color="green">087</FONT>                            try {<a name="line.87"></a>
-<FONT color="green">088</FONT>                                    bindings.addAll(wire(bound, context, field));<a name="line.88"></a>
-<FONT color="green">089</FONT>                            } catch (Exception e) {<a name="line.89"></a>
-<FONT color="green">090</FONT>                                    throw Throwables.throwUncheckedException(e);<a name="line.90"></a>
-<FONT color="green">091</FONT>                            }<a name="line.91"></a>
-<FONT color="green">092</FONT>                        }<a name="line.92"></a>
-<FONT color="green">093</FONT>                        return bindings;<a name="line.93"></a>
-<FONT color="green">094</FONT>                    }<a name="line.94"></a>
-<FONT color="green">095</FONT>                    <a name="line.95"></a>
-<FONT color="green">096</FONT>                    private static Collection&lt;Binding&gt; wire(BoundSelection bound, BindingContext context, Field field) throws IntrospectionException {<a name="line.96"></a>
-<FONT color="green">097</FONT>                            String target = bound.to();<a name="line.97"></a>
-<FONT color="green">098</FONT>                            Mutator mutator = Mutator.create(context, target);<a name="line.98"></a>
-<FONT color="green">099</FONT>                            if (JList.class.isAssignableFrom(field.getType())) {<a name="line.99"></a>
-<FONT color="green">100</FONT>                                    final JList list = context.getFieldObject(field, JList.class);<a name="line.100"></a>
-<FONT color="green">101</FONT>                                    return bindJList(bound, mutator, list);<a name="line.101"></a>
-<FONT color="green">102</FONT>                            } else if (JComboBox.class.isAssignableFrom(field.getType())) {<a name="line.102"></a>
-<FONT color="green">103</FONT>                                    final JComboBox combo = context.getFieldObject(field, JComboBox.class);<a name="line.103"></a>
-<FONT color="green">104</FONT>                                    final String nullValue = (String)Bound.Utilities.getNullValue(context, bound.nullValue());<a name="line.104"></a>
-<FONT color="green">105</FONT>                                    return bindJComboBox(bound, mutator, combo, nullValue);<a name="line.105"></a>
-<FONT color="green">106</FONT>                            } else {<a name="line.106"></a>
-<FONT color="green">107</FONT>                                    throw new IllegalArgumentException("don't know how to wire up @BoundSelection field: " + field.getName());      <a name="line.107"></a>
-<FONT color="green">108</FONT>                            }<a name="line.108"></a>
-<FONT color="green">109</FONT>                    }<a name="line.109"></a>
-<FONT color="green">110</FONT>    <a name="line.110"></a>
-<FONT color="green">111</FONT>                    private static Collection&lt;Binding&gt; bindJList(BoundSelection bound,<a name="line.111"></a>
-<FONT color="green">112</FONT>                                    final Mutator mutator,<a name="line.112"></a>
-<FONT color="green">113</FONT>                                    final JList list) {<a name="line.113"></a>
-<FONT color="green">114</FONT>                    final boolean multi = bound.multi();<a name="line.114"></a>
-<FONT color="green">115</FONT>                            final List&lt;Object&gt; ons = BindingContext.getOnObjects(bound.on(), mutator.getModel());<a name="line.115"></a>
-<FONT color="green">116</FONT>                            <a name="line.116"></a>
-<FONT color="green">117</FONT>                    list.addListSelectionListener(new ListSelectionListener() {<a name="line.117"></a>
-<FONT color="green">118</FONT>                            public void valueChanged(ListSelectionEvent e) {<a name="line.118"></a>
-<FONT color="green">119</FONT>                                    if (!e.getValueIsAdjusting()) {<a name="line.119"></a>
-<FONT color="green">120</FONT>                                            try {<a name="line.120"></a>
-<FONT color="green">121</FONT>                                                    if (multi) {<a name="line.121"></a>
-<FONT color="green">122</FONT>                                                            mutator.set(ImmutableList.copyOf(list.getSelectedValues()));<a name="line.122"></a>
-<FONT color="green">123</FONT>                                                    } else {<a name="line.123"></a>
-<FONT color="green">124</FONT>                                                            mutator.set(list.getSelectedValue());<a name="line.124"></a>
-<FONT color="green">125</FONT>                                                    }<a name="line.125"></a>
-<FONT color="green">126</FONT>                                } catch (Exception ex) {<a name="line.126"></a>
-<FONT color="green">127</FONT>                                    logger.error("could not invoke JList binding", ex); <a name="line.127"></a>
-<FONT color="green">128</FONT>                                }<a name="line.128"></a>
-<FONT color="green">129</FONT>                                    }<a name="line.129"></a>
-<FONT color="green">130</FONT>                        }<a name="line.130"></a>
-<FONT color="green">131</FONT>                    });<a name="line.131"></a>
-<FONT color="green">132</FONT>                    <a name="line.132"></a>
-<FONT color="green">133</FONT>                    Binding binding = new Binding() {<a name="line.133"></a>
-<FONT color="green">134</FONT>                            public &lt;T extends Enum&lt;?&gt; &amp; ModelUpdate&gt; void update(T... changed) {<a name="line.134"></a>
-<FONT color="green">135</FONT>                                    if (!BindingContext.isOn(ons, changed)) {<a name="line.135"></a>
-<FONT color="green">136</FONT>                                            return;<a name="line.136"></a>
-<FONT color="green">137</FONT>                                    }<a name="line.137"></a>
-<FONT color="green">138</FONT>                                    try {<a name="line.138"></a>
-<FONT color="green">139</FONT>                                            if (multi) {<a name="line.139"></a>
-<FONT color="green">140</FONT>                                                    Object[] selVals = list.getSelectedValues();<a name="line.140"></a>
-<FONT color="green">141</FONT>                                                    ImmutableList&lt;Object&gt; listCurrent = ImmutableList.of(selVals);<a name="line.141"></a>
-<FONT color="green">142</FONT>                                                    Collection&lt;?&gt; current = (Collection&lt;?&gt;)mutator.get();<a name="line.142"></a>
-<FONT color="green">143</FONT>                                                    if (current == null) {<a name="line.143"></a>
-<FONT color="green">144</FONT>                                                            current = ImmutableList.of();<a name="line.144"></a>
-<FONT color="green">145</FONT>                                                    }<a name="line.145"></a>
-<FONT color="green">146</FONT>                                                    if (!Iterables.elementsEqual(listCurrent, current)) {<a name="line.146"></a>
-<FONT color="green">147</FONT>                                                            Set&lt;?&gt; currentSet = Sets.newHashSet(current);<a name="line.147"></a>
-<FONT color="green">148</FONT>                                                            List&lt;Integer&gt; selIndices = Lists.newArrayList();<a name="line.148"></a>
-<FONT color="green">149</FONT>                                                            for (int i = 0; i &lt; list.getModel().getSize(); i++) {<a name="line.149"></a>
-<FONT color="green">150</FONT>                                                                    if (currentSet.contains(list.getModel().getElementAt(i))) {<a name="line.150"></a>
-<FONT color="green">151</FONT>                                                                            selIndices.add(i);<a name="line.151"></a>
-<FONT color="green">152</FONT>                                                                    }<a name="line.152"></a>
-<FONT color="green">153</FONT>                                                            }<a name="line.153"></a>
-<FONT color="green">154</FONT>                                                            int[] sel = new int[selIndices.size()];<a name="line.154"></a>
-<FONT color="green">155</FONT>                                                            int i = 0;<a name="line.155"></a>
-<FONT color="green">156</FONT>                                                            for (Integer index : selIndices) {<a name="line.156"></a>
-<FONT color="green">157</FONT>                                                                    sel[i++] = index;<a name="line.157"></a>
-<FONT color="green">158</FONT>                                                            }<a name="line.158"></a>
-<FONT color="green">159</FONT>                                                            list.setSelectedIndices(sel);<a name="line.159"></a>
-<FONT color="green">160</FONT>                                                    }<a name="line.160"></a>
-<FONT color="green">161</FONT>                                            } else {<a name="line.161"></a>
-<FONT color="green">162</FONT>                                Object current = mutator.get();<a name="line.162"></a>
-<FONT color="green">163</FONT>                                Object listCurrent = list.getSelectedValue();<a name="line.163"></a>
-<FONT color="green">164</FONT>                                if (!Objects.equal(current, listCurrent)) {<a name="line.164"></a>
-<FONT color="green">165</FONT>                                    if (current == null) {<a name="line.165"></a>
-<FONT color="green">166</FONT>                                            list.clearSelection();<a name="line.166"></a>
-<FONT color="green">167</FONT>                                    } else {<a name="line.167"></a>
-<FONT color="green">168</FONT>                                            list.setSelectedValue(current, true);<a name="line.168"></a>
-<FONT color="green">169</FONT>                                    }<a name="line.169"></a>
-<FONT color="green">170</FONT>                                }<a name="line.170"></a>
-<FONT color="green">171</FONT>                                            }<a name="line.171"></a>
-<FONT color="green">172</FONT>                                    } catch (Exception ex) {<a name="line.172"></a>
-<FONT color="green">173</FONT>                                    logger.error("could not invoke JList binding", ex); <a name="line.173"></a>
-<FONT color="green">174</FONT>                            }<a name="line.174"></a>
-<FONT color="green">175</FONT>                        }<a name="line.175"></a>
-<FONT color="green">176</FONT>                    };<a name="line.176"></a>
-<FONT color="green">177</FONT>                    mutator.getModel().bind(binding);<a name="line.177"></a>
-<FONT color="green">178</FONT>                    return Collections.singleton(binding);<a name="line.178"></a>
-<FONT color="green">179</FONT>            }<a name="line.179"></a>
-<FONT color="green">180</FONT>                    <a name="line.180"></a>
-<FONT color="green">181</FONT>                    private static Collection&lt;Binding&gt; bindJComboBox(final BoundSelection bound,<a name="line.181"></a>
-<FONT color="green">182</FONT>                                    final Mutator mutator,<a name="line.182"></a>
-<FONT color="green">183</FONT>                                    final JComboBox combo,<a name="line.183"></a>
-<FONT color="green">184</FONT>                    final String nullValue) {<a name="line.184"></a>
-<FONT color="green">185</FONT>                    <a name="line.185"></a>
-<FONT color="green">186</FONT>                            combo.addItemListener(new ItemListener() {<a name="line.186"></a>
-<FONT color="green">187</FONT>                                    public void itemStateChanged(ItemEvent e) {<a name="line.187"></a>
-<FONT color="green">188</FONT>                                            try {<a name="line.188"></a>
-<FONT color="green">189</FONT>                                                    Object current = mutator.get();<a name="line.189"></a>
-<FONT color="green">190</FONT>                                                    Object newValue = combo.getSelectedItem();<a name="line.190"></a>
-<FONT color="green">191</FONT>                                                    if (newValue.equals(nullValue)) {<a name="line.191"></a>
-<FONT color="green">192</FONT>                                                            newValue = null;<a name="line.192"></a>
-<FONT color="green">193</FONT>                                                    }<a name="line.193"></a>
-<FONT color="green">194</FONT>                                                    if (!Objects.equal(current, newValue)) {<a name="line.194"></a>
-<FONT color="green">195</FONT>                                                            mutator.set(newValue);<a name="line.195"></a>
-<FONT color="green">196</FONT>                                                    }<a name="line.196"></a>
-<FONT color="green">197</FONT>                                            } catch (Exception ex) {<a name="line.197"></a>
-<FONT color="green">198</FONT>                                                    logger.error("could not invoke JComboBox binding", ex); <a name="line.198"></a>
-<FONT color="green">199</FONT>                                            }<a name="line.199"></a>
-<FONT color="green">200</FONT>                                    }<a name="line.200"></a>
-<FONT color="green">201</FONT>                            });<a name="line.201"></a>
-<FONT color="green">202</FONT>                    <a name="line.202"></a>
-<FONT color="green">203</FONT>                    Binding binding = new Binding() {<a name="line.203"></a>
-<FONT color="green">204</FONT>                            public &lt;T extends Enum&lt;?&gt; &amp; ModelUpdate&gt; void update(T... changed) {<a name="line.204"></a>
-<FONT color="green">205</FONT>                                    try {<a name="line.205"></a>
-<FONT color="green">206</FONT>                                Object current = mutator.get();<a name="line.206"></a>
-<FONT color="green">207</FONT>                                if (current == null) {<a name="line.207"></a>
-<FONT color="green">208</FONT>                                    current = nullValue;<a name="line.208"></a>
-<FONT color="green">209</FONT>                                }<a name="line.209"></a>
-<FONT color="green">210</FONT>                                if (combo.getSelectedItem() != current) {<a name="line.210"></a>
-<FONT color="green">211</FONT>                                    combo.setSelectedItem(current);<a name="line.211"></a>
-<FONT color="green">212</FONT>                                }<a name="line.212"></a>
-<FONT color="green">213</FONT>                                    } catch (Exception ex) {<a name="line.213"></a>
-<FONT color="green">214</FONT>                                    logger.error("could not invoke JComboBox binding", ex); <a name="line.214"></a>
-<FONT color="green">215</FONT>                            }<a name="line.215"></a>
-<FONT color="green">216</FONT>                        }<a name="line.216"></a>
-<FONT color="green">217</FONT>                    };<a name="line.217"></a>
-<FONT color="green">218</FONT>                    mutator.getModel().bind(binding);<a name="line.218"></a>
-<FONT color="green">219</FONT>                    return Collections.singleton(binding);<a name="line.219"></a>
+<FONT color="green">057</FONT>             */<a name="line.57"></a>
+<FONT color="green">058</FONT>            String to();<a name="line.58"></a>
+<FONT color="green">059</FONT>            <a name="line.59"></a>
+<FONT color="green">060</FONT>            /**<a name="line.60"></a>
+<FONT color="green">061</FONT>             * When this binding should occur.<a name="line.61"></a>
+<FONT color="green">062</FONT>             */<a name="line.62"></a>
+<FONT color="green">063</FONT>            String[] on() default "";<a name="line.63"></a>
+<FONT color="green">064</FONT>            <a name="line.64"></a>
+<FONT color="green">065</FONT>            /**<a name="line.65"></a>
+<FONT color="green">066</FONT>             * How to render the null value in a JComboBox.<a name="line.66"></a>
+<FONT color="green">067</FONT>             */<a name="line.67"></a>
+<FONT color="green">068</FONT>            String nullValue() default ""; <a name="line.68"></a>
+<FONT color="green">069</FONT>            <a name="line.69"></a>
+<FONT color="green">070</FONT>            /**<a name="line.70"></a>
+<FONT color="green">071</FONT>             * Whether or not a JList should bind with multiselect.<a name="line.71"></a>
+<FONT color="green">072</FONT>             */<a name="line.72"></a>
+<FONT color="green">073</FONT>            boolean multi() default false;<a name="line.73"></a>
+<FONT color="green">074</FONT>            <a name="line.74"></a>
+<FONT color="green">075</FONT>            /**<a name="line.75"></a>
+<FONT color="green">076</FONT>             * Inner utility class that performs the runtime wiring of all {@link BoundSelection} bindings.<a name="line.76"></a>
+<FONT color="green">077</FONT>             */<a name="line.77"></a>
+<FONT color="green">078</FONT>            public static class Wiring implements BindingWiring {<a name="line.78"></a>
+<FONT color="green">079</FONT>                    private static final Logger logger = Logger.getLogger(BoundSelection.class);<a name="line.79"></a>
+<FONT color="green">080</FONT>                    <a name="line.80"></a>
+<FONT color="green">081</FONT>                    public Collection&lt;Binding&gt; wire(BindingContext context) {<a name="line.81"></a>
+<FONT color="green">082</FONT>                            List&lt;Field&gt; boundFields = context.getAnnotatedFields(BoundSelection.class);<a name="line.82"></a>
+<FONT color="green">083</FONT>                            List&lt;Binding&gt; bindings = Lists.newArrayList();<a name="line.83"></a>
+<FONT color="green">084</FONT>                        for (Field field : boundFields) {<a name="line.84"></a>
+<FONT color="green">085</FONT>                            BoundSelection bound = field.getAnnotation(BoundSelection.class);<a name="line.85"></a>
+<FONT color="green">086</FONT>                            try {<a name="line.86"></a>
+<FONT color="green">087</FONT>                                    bindings.addAll(wire(bound, context, field));<a name="line.87"></a>
+<FONT color="green">088</FONT>                            } catch (Exception e) {<a name="line.88"></a>
+<FONT color="green">089</FONT>                                    throw Throwables.throwUncheckedException(e);<a name="line.89"></a>
+<FONT color="green">090</FONT>                            }<a name="line.90"></a>
+<FONT color="green">091</FONT>                        }<a name="line.91"></a>
+<FONT color="green">092</FONT>                        return bindings;<a name="line.92"></a>
+<FONT color="green">093</FONT>                    }<a name="line.93"></a>
+<FONT color="green">094</FONT>                    <a name="line.94"></a>
+<FONT color="green">095</FONT>                    private static Collection&lt;Binding&gt; wire(BoundSelection bound, BindingContext context, Field field) throws IntrospectionException {<a name="line.95"></a>
+<FONT color="green">096</FONT>                            String target = bound.to();<a name="line.96"></a>
+<FONT color="green">097</FONT>                            Mutator mutator = Mutator.create(context, target);<a name="line.97"></a>
+<FONT color="green">098</FONT>                            if (JList.class.isAssignableFrom(field.getType())) {<a name="line.98"></a>
+<FONT color="green">099</FONT>                                    final JList list = context.getFieldObject(field, JList.class);<a name="line.99"></a>
+<FONT color="green">100</FONT>                                    return bindJList(bound, mutator, list);<a name="line.100"></a>
+<FONT color="green">101</FONT>                            } else if (JComboBox.class.isAssignableFrom(field.getType())) {<a name="line.101"></a>
+<FONT color="green">102</FONT>                                    final JComboBox combo = context.getFieldObject(field, JComboBox.class);<a name="line.102"></a>
+<FONT color="green">103</FONT>                                    final String nullValue = (String)Bound.Utilities.getNullValue(context, bound.nullValue());<a name="line.103"></a>
+<FONT color="green">104</FONT>                                    return bindJComboBox(bound, mutator, combo, nullValue);<a name="line.104"></a>
+<FONT color="green">105</FONT>                            } else {<a name="line.105"></a>
+<FONT color="green">106</FONT>                                    throw new IllegalArgumentException("don't know how to wire up @BoundSelection field: " + field.getName());      <a name="line.106"></a>
+<FONT color="green">107</FONT>                            }<a name="line.107"></a>
+<FONT color="green">108</FONT>                    }<a name="line.108"></a>
+<FONT color="green">109</FONT>    <a name="line.109"></a>
+<FONT color="green">110</FONT>                    private static Collection&lt;Binding&gt; bindJList(BoundSelection bound,<a name="line.110"></a>
+<FONT color="green">111</FONT>                                    final Mutator mutator,<a name="line.111"></a>
+<FONT color="green">112</FONT>                                    final JList list) {<a name="line.112"></a>
+<FONT color="green">113</FONT>                    final boolean multi = bound.multi();<a name="line.113"></a>
+<FONT color="green">114</FONT>                            final List&lt;Object&gt; ons = BindingContext.getOnObjects(bound.on(), mutator.getModel());<a name="line.114"></a>
+<FONT color="green">115</FONT>                            <a name="line.115"></a>
+<FONT color="green">116</FONT>                    list.addListSelectionListener(new ListSelectionListener() {<a name="line.116"></a>
+<FONT color="green">117</FONT>                            public void valueChanged(ListSelectionEvent e) {<a name="line.117"></a>
+<FONT color="green">118</FONT>                                    if (!e.getValueIsAdjusting()) {<a name="line.118"></a>
+<FONT color="green">119</FONT>                                            try {<a name="line.119"></a>
+<FONT color="green">120</FONT>                                                    if (multi) {<a name="line.120"></a>
+<FONT color="green">121</FONT>                                                            mutator.set(ImmutableList.copyOf(list.getSelectedValues()));<a name="line.121"></a>
+<FONT color="green">122</FONT>                                                    } else {<a name="line.122"></a>
+<FONT color="green">123</FONT>                                                            mutator.set(list.getSelectedValue());<a name="line.123"></a>
+<FONT color="green">124</FONT>                                                    }<a name="line.124"></a>
+<FONT color="green">125</FONT>                                } catch (Exception ex) {<a name="line.125"></a>
+<FONT color="green">126</FONT>                                    logger.error("could not invoke JList binding", ex); <a name="line.126"></a>
+<FONT color="green">127</FONT>                                }<a name="line.127"></a>
+<FONT color="green">128</FONT>                                    }<a name="line.128"></a>
+<FONT color="green">129</FONT>                        }<a name="line.129"></a>
+<FONT color="green">130</FONT>                    });<a name="line.130"></a>
+<FONT color="green">131</FONT>                    <a name="line.131"></a>
+<FONT color="green">132</FONT>                    Binding binding = new Binding() {<a name="line.132"></a>
+<FONT color="green">133</FONT>                            public &lt;T extends Enum&lt;?&gt; &amp; ModelUpdate&gt; void update(T... changed) {<a name="line.133"></a>
+<FONT color="green">134</FONT>                                    if (!BindingContext.isOn(ons, changed)) {<a name="line.134"></a>
+<FONT color="green">135</FONT>                                            return;<a name="line.135"></a>
+<FONT color="green">136</FONT>                                    }<a name="line.136"></a>
+<FONT color="green">137</FONT>                                    try {<a name="line.137"></a>
+<FONT color="green">138</FONT>                                            if (multi) {<a name="line.138"></a>
+<FONT color="green">139</FONT>                                                    Object[] selVals = list.getSelectedValues();<a name="line.139"></a>
+<FONT color="green">140</FONT>                                                    ImmutableList&lt;Object&gt; listCurrent = ImmutableList.copyOf(selVals);<a name="line.140"></a>
+<FONT color="green">141</FONT>                                                    Collection&lt;?&gt; current = (Collection&lt;?&gt;)mutator.get();<a name="line.141"></a>
+<FONT color="green">142</FONT>                                                    if (current == null) {<a name="line.142"></a>
+<FONT color="green">143</FONT>                                                            current = ImmutableList.of();<a name="line.143"></a>
+<FONT color="green">144</FONT>                                                    }<a name="line.144"></a>
+<FONT color="green">145</FONT>                                                    if (!Iterables.elementsEqual(listCurrent, current)) {<a name="line.145"></a>
+<FONT color="green">146</FONT>                                                            Set&lt;?&gt; currentSet = Sets.newHashSet(current);<a name="line.146"></a>
+<FONT color="green">147</FONT>                                                            List&lt;Integer&gt; selIndices = Lists.newArrayList();<a name="line.147"></a>
+<FONT color="green">148</FONT>                                                            for (int i = 0; i &lt; list.getModel().getSize(); i++) {<a name="line.148"></a>
+<FONT color="green">149</FONT>                                                                    if (currentSet.contains(list.getModel().getElementAt(i))) {<a name="line.149"></a>
+<FONT color="green">150</FONT>                                                                            selIndices.add(i);<a name="line.150"></a>
+<FONT color="green">151</FONT>                                                                    }<a name="line.151"></a>
+<FONT color="green">152</FONT>                                                            }<a name="line.152"></a>
+<FONT color="green">153</FONT>                                                            int[] sel = new int[selIndices.size()];<a name="line.153"></a>
+<FONT color="green">154</FONT>                                                            int i = 0;<a name="line.154"></a>
+<FONT color="green">155</FONT>                                                            for (Integer index : selIndices) {<a name="line.155"></a>
+<FONT color="green">156</FONT>                                                                    sel[i++] = index;<a name="line.156"></a>
+<FONT color="green">157</FONT>                                                            }<a name="line.157"></a>
+<FONT color="green">158</FONT>                                                            list.setSelectedIndices(sel);<a name="line.158"></a>
+<FONT color="green">159</FONT>                                                    }<a name="line.159"></a>
+<FONT color="green">160</FONT>                                            } else {<a name="line.160"></a>
+<FONT color="green">161</FONT>                                Object current = mutator.get();<a name="line.161"></a>
+<FONT color="green">162</FONT>                                Object listCurrent = list.getSelectedValue();<a name="line.162"></a>
+<FONT color="green">163</FONT>                                if (!Objects.equal(current, listCurrent)) {<a name="line.163"></a>
+<FONT color="green">164</FONT>                                    if (current == null) {<a name="line.164"></a>
+<FONT color="green">165</FONT>                                            list.clearSelection();<a name="line.165"></a>
+<FONT color="green">166</FONT>                                    } else {<a name="line.166"></a>
+<FONT color="green">167</FONT>                                            list.setSelectedValue(current, true);<a name="line.167"></a>
+<FONT color="green">168</FONT>                                    }<a name="line.168"></a>
+<FONT color="green">169</FONT>                                }<a name="line.169"></a>
+<FONT color="green">170</FONT>                                            }<a name="line.170"></a>
+<FONT color="green">171</FONT>                                    } catch (Exception ex) {<a name="line.171"></a>
+<FONT color="green">172</FONT>                                    logger.error("could not invoke JList binding", ex); <a name="line.172"></a>
+<FONT color="green">173</FONT>                            }<a name="line.173"></a>
+<FONT color="green">174</FONT>                        }<a name="line.174"></a>
+<FONT color="green">175</FONT>                    };<a name="line.175"></a>
+<FONT color="green">176</FONT>                    mutator.getModel().bind(binding);<a name="line.176"></a>
+<FONT color="green">177</FONT>                    return Collections.singleton(binding);<a name="line.177"></a>
+<FONT color="green">178</FONT>            }<a name="line.178"></a>
+<FONT color="green">179</FONT>                    <a name="line.179"></a>
+<FONT color="green">180</FONT>                    private static Collection&lt;Binding&gt; bindJComboBox(final BoundSelection bound,<a name="line.180"></a>
+<FONT color="green">181</FONT>                                    final Mutator mutator,<a name="line.181"></a>
+<FONT color="green">182</FONT>                                    final JComboBox combo,<a name="line.182"></a>
+<FONT color="green">183</FONT>                    final String nullValue) {<a name="line.183"></a>
+<FONT color="green">184</FONT>                    <a name="line.184"></a>
+<FONT color="green">185</FONT>                            combo.addItemListener(new ItemListener() {<a name="line.185"></a>
+<FONT color="green">186</FONT>                                    public void itemStateChanged(ItemEvent e) {<a name="line.186"></a>
+<FONT color="green">187</FONT>                                            try {<a name="line.187"></a>
+<FONT color="green">188</FONT>                                                    Object current = mutator.get();<a name="line.188"></a>
+<FONT color="green">189</FONT>                                                    Object newValue = combo.getSelectedItem();<a name="line.189"></a>
+<FONT color="green">190</FONT>                                                    if (newValue.equals(nullValue)) {<a name="line.190"></a>
+<FONT color="green">191</FONT>                                                            newValue = null;<a name="line.191"></a>
+<FONT color="green">192</FONT>                                                    }<a name="line.192"></a>
+<FONT color="green">193</FONT>                                                    if (!Objects.equal(current, newValue)) {<a name="line.193"></a>
+<FONT color="green">194</FONT>                                                            mutator.set(newValue);<a name="line.194"></a>
+<FONT color="green">195</FONT>                                                    }<a name="line.195"></a>
+<FONT color="green">196</FONT>                                            } catch (Exception ex) {<a name="line.196"></a>
+<FONT color="green">197</FONT>                                                    logger.error("could not invoke JComboBox binding", ex); <a name="line.197"></a>
+<FONT color="green">198</FONT>                                            }<a name="line.198"></a>
+<FONT color="green">199</FONT>                                    }<a name="line.199"></a>
+<FONT color="green">200</FONT>                            });<a name="line.200"></a>
+<FONT color="green">201</FONT>                    <a name="line.201"></a>
+<FONT color="green">202</FONT>                    Binding binding = new Binding() {<a name="line.202"></a>
+<FONT color="green">203</FONT>                            public &lt;T extends Enum&lt;?&gt; &amp; ModelUpdate&gt; void update(T... changed) {<a name="line.203"></a>
+<FONT color="green">204</FONT>                                    try {<a name="line.204"></a>
+<FONT color="green">205</FONT>                                Object current = mutator.get();<a name="line.205"></a>
+<FONT color="green">206</FONT>                                if (current == null) {<a name="line.206"></a>
+<FONT color="green">207</FONT>                                    current = nullValue;<a name="line.207"></a>
+<FONT color="green">208</FONT>                                }<a name="line.208"></a>
+<FONT color="green">209</FONT>                                if (!Objects.equal(combo.getSelectedItem(), current)) {<a name="line.209"></a>
+<FONT color="green">210</FONT>                                    combo.setSelectedItem(current);<a name="line.210"></a>
+<FONT color="green">211</FONT>                                }<a name="line.211"></a>
+<FONT color="green">212</FONT>                                    } catch (Exception ex) {<a name="line.212"></a>
+<FONT color="green">213</FONT>                                    logger.error("could not invoke JComboBox binding", ex); <a name="line.213"></a>
+<FONT color="green">214</FONT>                            }<a name="line.214"></a>
+<FONT color="green">215</FONT>                        }<a name="line.215"></a>
+<FONT color="green">216</FONT>                    };<a name="line.216"></a>
+<FONT color="green">217</FONT>                    mutator.getModel().bind(binding);<a name="line.217"></a>
+<FONT color="green">218</FONT>                    return Collections.singleton(binding);<a name="line.218"></a>
+<FONT color="green">219</FONT>            }<a name="line.219"></a>
 <FONT color="green">220</FONT>            }<a name="line.220"></a>
-<FONT color="green">221</FONT>            }<a name="line.221"></a>
-<FONT color="green">222</FONT>    }<a name="line.222"></a>
+<FONT color="green">221</FONT>    }<a name="line.221"></a>
 
 
 
